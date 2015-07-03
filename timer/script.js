@@ -8,61 +8,56 @@
 window.onload = function() {
 	var timeBlock = document.querySelector(".current-time");
 
+	function addZero (arg) {
+		if (arg < 10) {
+			arg = "0" + arg;
+		}
+		return arg;
+	}
+
 	function addTime () {
-	    var date = new Date();
-	    var hour = date.getHours();
-	    var minute = date.getMinutes();
-	    var second = date.getSeconds();
-	    if (hour < 10) {
-	    	hour = "0" + hour;
-	    }
-	    if (minute < 10) {
-	    	minute = "0" + minute;
-	    }
-	    if (second < 10) {
-	    	second = "0" + second;
-	    }
-	    timeBlock.innerHTML = hour + ":" + minute + ":" + second;
+	    var date = new Date(),
+	    	hour = date.getHours(),
+	    	minute = date.getMinutes(),
+	    	second = date.getSeconds(),
+	    	timeArr = [hour, minute, second];
+	    	var newTime = timeArr.map (function(element) {
+	    		return addZero(element);
+	    	});
+	    timeBlock.innerHTML = newTime.join(":");
 	}
 
 	function addDate () {
-	    var date = new Date();
-	    var year = date.getFullYear();
-	    var month = date.getMonth();
-	    var date = date.getDate();
-	    if (month < 10) {
-	    	month = "0" + month;
-	    }
-	    if (date < 10) {
-	    	date = "0" + date;
-	    }
-	    timeBlock.innerHTML = year + ":" + month + ":" + date;
+	    var date = new Date(),
+	    	year = date.getFullYear(),
+	    	month = date.getMonth(),
+	    	date = date.getDate();
+	    	dateArr = [year, month, date];
+	    	var newDate = dateArr.map (function(element) {
+	    		return addZero(element);
+	    	})
+	    timeBlock.innerHTML = newDate.join(":");
 	}
 
 	var timeInterval;
-	var dateInterval;
 
 	function showTime() {
 		clearInterval(timeInterval);
-		clearInterval(dateInterval);
 		addTime();
 		timeInterval = setInterval(addTime, 1000);
 	}
 
-	function showDate() {
-		clearInterval(dateInterval);
+	function showDate(e) {
+		e.preventDefault();
 		clearInterval(timeInterval);
 		addDate();
-		dateInterval = setInterval(addDate, 100000);
+		timeInterval = setInterval(addDate, 1000);
 	}
 
 	showTime();
 
 	timeBlock.addEventListener("click", showTime);
-	timeBlock.addEventListener("contextmenu", function (e) {
-		e.preventDefault();
-		showDate();
-	});
+	timeBlock.addEventListener("contextmenu", showDate);
 
 
 	/*перетаскивание
