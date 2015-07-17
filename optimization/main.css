@@ -1,0 +1,131 @@
+#timeline {
+    width: 950px;
+    margin: 10px auto;
+    position: absolute;
+    left: 50%;
+    margin-left: -475px;
+
+}
+
+#timeline:before {
+    content: "";
+    display: block;
+    border: 3px solid #bebebe;
+    position: absolute;
+    height: 100%;
+    left: 50%;
+    margin-left: -3px;
+
+}
+
+#timeline_list {
+    padding: 0;
+    margin: 0;
+}
+
+li:nth-child(even):after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 11px;
+    left: -20px;
+    width: 0;
+    height: 0;
+    border-color: transparent #fff transparent transparent;
+    border-style: solid;
+    border-width: 10px;
+}
+
+li:nth-child(even):before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: -22px;
+    width: 0;
+    height: 0;
+    border-color: transparent #bebebe transparent transparent;
+    border-style: solid;
+    border-width: 11px;
+}
+
+li:nth-child(odd):after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 11px;
+    right: -20px;
+    width: 0;
+    height: 0;
+    border-color: transparent transparent transparent #fff;
+    border-style: solid;
+    border-width: 10px;
+}
+
+li:nth-child(odd):before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: -22px;
+    width: 0;
+    height: 0;
+    border-color: transparent transparent transparent #bebebe;
+    border-style: solid;
+    border-width: 11px;
+}
+
+.dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    left: 467px;
+    background: rgb(190, 190, 190);
+}
+
+li:nth-child(odd) p:before {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    left: 466px;
+    top: 13px;
+    background: rgb(190, 190, 190);
+}
+
+li:nth-child(even) p:before {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    left: -34px;
+    top: 13px;
+    background: rgb(190, 190, 190);
+}
+
+li:nth-child(even) {
+    float: right;
+    clear: right;
+}
+
+li:nth-child(odd) {
+    float: left;
+    clear: left;
+}
+
+li {
+      box-sizing: border-box;
+      font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+      font-size: 13px;
+      list-style: none;
+      width: 450px;
+      border: 1px solid rgb(190, 190, 190);
+      padding: 15px;
+      margin: 5px 0px 0px;
+      position: relative;
+}
