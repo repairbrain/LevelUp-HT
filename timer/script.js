@@ -6,86 +6,103 @@
 
 
 window.onload = function() {
-	var timeBlock = document.querySelector(".current-time");
 
-	function addZero (arg) {
-		if (arg < 10) {
-			arg = "0" + arg;
+	function Clock (selector) {
+		var element = document.querySelector(selector),
+			mode = true, // true/false , 'time', 'date'
+			timerId = null;
+
+		function addZero (arg) {
+			if (arg < 10) {
+				arg = "0" + arg;
+			}
+			return arg;
 		}
-		return arg;
-	}
 
-	function addTime () {
-	    var date = new Date(),
-	    	hour = date.getHours(),
-	    	minute = date.getMinutes(),
-	    	second = date.getSeconds(),
-	    	timeArr = [hour, minute, second];
-	    	var newTime = timeArr.map (function(element) {
+		function getTime () {
+		    var date = new Date(),
+		    	timeArr = [date.getHours(),  date.getMinutes(), date.getSeconds()];
+	    	var formattedTime = timeArr.map (function(element) {
 	    		return addZero(element);
 	    	});
-	    timeBlock.innerHTML = newTime.join(":");
-	}
+		    return formattedTime.join(":");
+		}
 
-	function addDate () {
-	    var date = new Date(),
-	    	year = date.getFullYear(),
-	    	month = date.getMonth(),
-	    	date = date.getDate();
-	    	dateArr = [year, month, date];
-	    	var newDate = dateArr.map (function(element) {
+		function getDate () {
+		    var date = new Date(),
+		    	dateArr = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
+	    	var formattedDate = dateArr.map (function(element) {
 	    		return addZero(element);
-	    	})
-	    timeBlock.innerHTML = newDate.join(":");
+	    	});
+		    return formattedDate.join(":");
+		}
+
+		function render () {
+			var neededMethod = "";
+			if (mode) {
+				neededMethod = getTime();
+			} else {
+				neededMethod = getDate();
+			}
+			element.innerHTML = neededMethod;
+		}
+
+
+		function init() {
+			render();
+			timerId = setInterval(render, 1000);
+		}
+
+		function destroy() {
+			element.innerHTML = null;
+			clearInterval(timerId);
+		}
+
+		this.init = init;
+		this.destroy = destroy;
+
+		element.addEventListener("click", function() {
+			mode = true;
+			render();
+		});
+		element.addEventListener("contextmenu", function(e) {
+			mode = false;
+			e.preventDefault();
+			render();
+		});
+
+
+		/*перетаскивание
+			идея взята с learn.javascript.ru
+		*/
+		element.ondragstart = function () {
+			return false;
+		};
+
+		element.onmousedown = function (e) {
+
+			function moveAt(e) {
+		    element.style.left = e.pageX - element.offsetWidth / 2 + 'px';
+		    element.style.top = e.pageY - element.offsetHeight / 2 + 'px';
+	  		}
+
+	  		moveAt(e);
+
+	  		document.onmousemove = function(e) {
+	    		moveAt(e);
+	  		};
+
+	  		element.onmouseup = function() {
+	    		document.onmousemove = null;
+	    		element.onmouseup = null;
+	  		};
+		};
 	}
 
-	var timeInterval;
+	var clock = new Clock(".current-time");
+	clock.init();
+	
 
-	function showTime() {
-		clearInterval(timeInterval);
-		addTime();
-		timeInterval = setInterval(addTime, 1000);
-	}
-
-	function showDate(e) {
-		e.preventDefault();
-		clearInterval(timeInterval);
-		addDate();
-		timeInterval = setInterval(addDate, 1000);
-	}
-
-	showTime();
-
-	timeBlock.addEventListener("click", showTime);
-	timeBlock.addEventListener("contextmenu", showDate);
-
-
-	/*перетаскивание
-		идея взята с learn.javascript.ru
-	*/
-	timeBlock.ondragstart = function () {
-		return false;
-	}
-
-	timeBlock.onmousedown = function (e) {
-
-		function moveAt(e) {
-	    timeBlock.style.left = e.pageX - timeBlock.offsetWidth / 2 + 'px';
-	    timeBlock.style.top = e.pageY - timeBlock.offsetHeight / 2 + 'px';
-  		}
-
-  		moveAt(e);
-
-  		document.onmousemove = function(e) {
-    		moveAt(e);
-  		}
-
-  		timeBlock.onmouseup = function() {
-    		document.onmousemove = null;
-    		timeBlock.onmouseup = null;
-  		}
-	}
-
-}    
+};    
 
 
