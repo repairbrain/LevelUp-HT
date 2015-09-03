@@ -1,13 +1,14 @@
 var BookView = Backbone.View.extend({
 	
 	events: {
-		'click #sendform': 'addBook' // 1
+		'click #sendform': 'addBook',
+		'click .delete-book': 'deleteBook'
 	},
 	
-	template: _.template('<li><%= lastName %>, <%= name %>, <%= title %>, <%= pubYear %>, <%= pubHouse %></li>'),
+	template: _.template('<li><%= lastName %>, <%= name %>, <%= title %>, <%= pubYear %>, <%= pubHouse %> <button class="delete-book">delete</button></li>'),
 	
 	initialize: function () {
-		this.listenTo(this.model, 'change', this.renderSomeAuthor); // 2
+		this.listenTo(this.model, 'change', this.renderSomeAuthor);
 	},
 	
 	addBook: function () {
@@ -17,13 +18,23 @@ var BookView = Backbone.View.extend({
 		var pubYearValue = $("#pubYear").val();
 		var pubHouseValue = $("#pubHouse").val();
 
-		this.model.set({lastName: lastNameValue, name: nameValue, title: titleValue, pubYear: pubYearValue, pubHouse: pubHouseValue});
+		var values = {lastName: lastNameValue, name: nameValue, title: titleValue, pubYear: pubYearValue, pubHouse: pubHouseValue};
+
+		this.model.set(values, {validate:true});
+
+		/*Коллекция здесь пока только для понтов*/
+		this.collection.add(values, {validate:true});
+		console.log(this.collection);
+	},
+
+	deleteBook: function(event) {
+		event.target.parentNode.remove();
 	},
 	
 	renderSomeAuthor: function () {
-		var template = this.template(this.model.toJSON());  // 5 // '<div> value from input </div>';
+		var template = this.template(this.model.toJSON()); 
 		
-		this.$('ul').append(template); //
+		this.$('ul').append(template);
 		
 		return this;
 	}

@@ -6,29 +6,15 @@ var BookModel = Backbone.Model.extend({
 		title: '',
 		pubYear: '',
 		pubHouse: ''
-	}
-	
-/*	initialize: function () {
-		this.listenTo(this, 'change:title', this.onChangeTitle)
-			.listenTo(this, 'change:author',this.onChangeAuthor);
-	},
-	
-	onChangeTitle: function (model, changedTitle) {
-		if (changedTitle === 'podderevyanskiy') {
-			this.set('author', "Les'");
-		} else {
-			console.log('changedTitle: ' + changedTitle);
-		}
-	},
-	
-	onChangeAuthor:function (model, changedAuthor) {
-		alert(changedAuthor);
 	},
 	
 	validate: function (attrs) {
-		if  (attrs.title.constructor.name !== 'String') {
-			return 'titlte should be a string';
+		for (var key in attrs) {
+			if (attrs[key] === '') {
+				console.log('some field is empty');
+				return 'some field is empty';
+			}
 		}
-	}*/
+	}
 	
 });
